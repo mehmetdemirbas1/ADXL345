@@ -44,7 +44,7 @@
 I2C_HandleTypeDef hi2c1;
 
 /* USER CODE BEGIN PV */
-uint8_t deviceAddr=0;
+
 
 /* USER CODE END PV */
 
@@ -58,6 +58,7 @@ static void MX_I2C1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+ADXL345_InitStatus_t status;
 
 /* USER CODE END 0 */
 
@@ -92,8 +93,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-
-  deviceAddr = ADXL345_ScanDeviceAddr();
+  status = ADXL345_Init();
 
   /* USER CODE END 2 */
 

@@ -46,8 +46,21 @@
 
 #define ADXL345_DEVICE_ADDR		0xA6
 
+typedef enum
+{
+	READ_FAIL=0,
+	READ_SUCCESS=1
+}ADXL345_RegisterStatus_t;
+
+typedef enum
+{
+	INIT_FAIL = 0,
+	INIT_OK = 1
+}ADXL345_InitStatus_t;
 
 uint8_t ADXL345_ScanDeviceAddr(void);
+ADXL345_RegisterStatus_t ADXL345_ReadRegister(uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata);
+ADXL345_InitStatus_t ADXL345_Init(void);
 
 
 #endif /* INC_ADXL345_H_ */

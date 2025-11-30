@@ -18,3 +18,35 @@ uint8_t ADXL345_ScanDeviceAddr(void)
 	return -1;
 }
 
+
+ADXL345_RegisterStatus_t ADXL345_ReadRegister(uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata)
+{
+	if(HAL_I2C_Mem_Read(&hi2c1, ADXL345_DEVICE_ADDR, registerAddr, 1, pdata, sizeOfData, TIMEOUT)==HAL_OK){
+		return READ_SUCCESS;
+	}
+	return READ_FAIL;
+}
+
+ADXL345_InitStatus_t ADXL345_Init(void)
+{
+	uint8_t deviceId = 0;
+	ADXL345_ReadRegister(DEVID, sizeof(uint8_t),&deviceId);
+	if(0xE5 != deviceId)
+		return INIT_FAIL;
+
+
+
+
+	return INIT_OK;
+}
+
+
+
+
+
+
+
+
+
+
+
