@@ -46,21 +46,59 @@
 
 #define ADXL345_DEVICE_ADDR		0xA6
 
+
+#define WAKEUP_8HZ				0x00
+#define WAKEUP_4HZ				0x01
+#define WAKEUP_2HZ				0x02
+#define WAKEUP_1HZ				0x03
+
+typedef enum
+{
+	MODE_OFF = 0x00,
+	MODE_ON	= 0x01
+
+}ADXL345_PowerControlStatus_t;
+
+
 typedef enum
 {
 	READ_FAIL=0,
-	READ_SUCCESS=1
-}ADXL345_RegisterStatus_t;
+	READ_OK=1
+
+}ADXL345_ReadStatus_t;
+
+typedef enum
+{
+	WRITE_FAIL=0,
+	WRITE_OK=1
+
+}ADXL345_WriteStatus_t;
 
 typedef enum
 {
 	INIT_FAIL = 0,
 	INIT_OK = 1
+
 }ADXL345_InitStatus_t;
 
+
+typedef struct
+{
+	uint8_t wakeUp : 2;			// D0:D1 - Wakeup Bits: Uyku modunda okuma frekansını ayarlar. 00: 8Hz, 01: 4Hz, 10: 2Hz, 11: 1Hz
+	uint8_t sleep : 1;			// D2 - Sleep Bit: Cihazı uyku moduna alır.0: Normal Mod, 1: Uyku Modu (Düşük güç tüketimi)
+	uint8_t mesaureBit : 1;		// D3 - Measure Bit: Ölçümü başlatır veya durdurur. 1: Ölçüm Modu 0: Bekleme Modu
+	uint8_t autoSleep : 1;		// D4 - Auto_Sleep Bit: Otomatik uyku özelliğini açar. 1:Hareketsizlik algılanırsa otomatik uykuya geçer 0:Devre dışı.
+	uint8_t linkBit : 1;		// D5 - Link Bit: 1: Activity 0: Fonksiyonlar concurrent çalışır.
+	uint8_t reserved : 2;
+
+	uint8_t All;
+
+}ADXL345_PowerControlRegister_t;
+
 uint8_t ADXL345_ScanDeviceAddr(void);
-ADXL345_RegisterStatus_t ADXL345_ReadRegister(uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata);
 ADXL345_InitStatus_t ADXL345_Init(void);
+ADXL345_ReadStatus_t ADXL345_ReadRegister(uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata);
+ADXL345_WriteStatus_t ADXL345_WriteRegister(uint16_t registerAddr, uint16_t Value);
 
 
 #endif /* INC_ADXL345_H_ */

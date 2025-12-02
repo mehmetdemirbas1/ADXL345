@@ -19,12 +19,24 @@ uint8_t ADXL345_ScanDeviceAddr(void)
 }
 
 
-ADXL345_RegisterStatus_t ADXL345_ReadRegister(uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata)
+ADXL345_ReadStatus_t ADXL345_ReadRegister(uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata)
 {
 	if(HAL_I2C_Mem_Read(&hi2c1, ADXL345_DEVICE_ADDR, registerAddr, 1, pdata, sizeOfData, TIMEOUT)==HAL_OK){
-		return READ_SUCCESS;
+		return READ_OK;
 	}
 	return READ_FAIL;
+}
+
+ADXL345_WriteStatus_t ADXL345_WriteRegister(uint16_t registerAddr, uint16_t Value)
+{
+	uint8_t data[2]={0};
+	data[0] = registerAddr;
+	data[1] = Value;
+
+	if(HAL_I2C_Master_Transmit(&hi2c1, ADXL345_DEVICE_ADDR, data, sizeof(data), TIMEOUT)== HAL_OK)
+		return WRITE_OK;
+
+	return WRITE_FAIL;
 }
 
 ADXL345_InitStatus_t ADXL345_Init(void)
@@ -34,8 +46,18 @@ ADXL345_InitStatus_t ADXL345_Init(void)
 	if(0xE5 != deviceId)
 		return INIT_FAIL;
 
+	uint8_t temp = 0;
+	ADXL345_PowerControlRegister_t powerControl = {0};
 
+	powerControl.wakeUp=WAKEUP_8HZ;
+	powerControl.sleep= MODE_OFF;
+	powerControl.mesaureBit = MODE_ON;
+	powerControl.autoSleep = MODE_OFF;
+	powerControl.linkBit = MODE_OFF;
 
+	temp = *((uint8_t*)&powerControl);
+
+	ADXL345_WriteRegister(POWER_CTL, temp);
 
 	return INIT_OK;
 }
