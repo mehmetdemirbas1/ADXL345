@@ -71,8 +71,14 @@ ADXL345_InitStatus_t ADXL345_Init(void)
 
 	ADXL345_WriteRegister(DATA_FORMAT, temp);
 
-	ADXL345_BRateRegister_t baudrateConfig = {0};
+	ADXL345_BRateRegister_t bwrateConfig = {0};
 
+	bwrateConfig.rate = BW_800;
+	bwrateConfig.lowPower = 0x00;
+
+	temp = *((uint8_t*)&bwrateConfig);
+
+	ADXL345_WriteRegister(BW_RATE, temp);
 
 	return INIT_OK;
 }

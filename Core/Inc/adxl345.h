@@ -43,30 +43,29 @@
 
 #define TIMEOUT					1000
 
-
 #define ADXL345_DEVICE_ADDR		0xA6
 
-
+/* @WAKEUP_BITS  */
 #define WAKEUP_8HZ				0x00
 #define WAKEUP_4HZ				0x01
 #define WAKEUP_2HZ				0x02
 #define WAKEUP_1HZ				0x03
 
+/* @RANGE_BITS  */
 #define RANGE_2G				0x00
 #define RANGE_4G				0x01
 #define RANGE_8G				0x02
 #define RANGE_16G				0x03
 
+/* @BW_RATE  */
+#define BW_1600					0x0F
+#define BW_800					0x0E
+#define BW_400					0x0D
+#define BW_200					0x0C
+#define BW_100					0x0B
+#define BW_50					0x0A
+#define BW_25					0x09
 
-#define HZ_3000					0x0F
-#define HZ_1600					0x0E
-#define HZ_800					0x0D
-#define HZ_400					0x0C
-#define HZ_200					0x0B
-#define HZ_100					0x0A
-#define HZ_50					0x09
-#define HZ_25					0x08
-#define HZ_12H5					0x07
 
 typedef enum
 {
@@ -100,7 +99,7 @@ typedef enum
 
 typedef struct
 {
-	uint8_t wakeUp : 2;			// D0:D1 - Wakeup Bits: Uyku modunda okuma frekansını ayarlar. 00: 8Hz, 01: 4Hz, 10: 2Hz, 11: 1Hz
+	uint8_t wakeUp : 2;			// D0:D1 - Wakeup Bits: Uyku modunda okuma frekansını ayarlar. 00: 8Hz, 01: 4Hz, 10: 2Hz, 11: 1Hz (@WAKEUP_BITS)
 	uint8_t sleep : 1;			// D2 - Sleep Bit: Cihazı uyku moduna alır. 0: Normal Mod, 1: Uyku Modu (Düşük güç tüketimi)
 	uint8_t mesaureBit : 1;		// D3 - Measure Bit: Ölçümü başlatır veya durdurur. 1: Ölçüm Modu 0: Bekleme Modu
 	uint8_t autoSleep : 1;		// D4 - Auto_Sleep Bit: Otomatik uyku özelliğini açar. 1:Hareketsizlik algılanırsa otomatik uykuya geçer 0:Devre dışı.
@@ -113,25 +112,28 @@ typedef struct
 
 typedef struct
 {
-	uint8_t range : 2;      	// Ölçüm aralığını (G Range) seçer: 0x00=±2g, 0x01=±4g, 0x02=±8g, 0x03=±16g].
-	uint8_t justify : 1;   	 	// Veri hizalama: 1=Sola dayalı (Left-justified), 0=Sağa dayalı.
-	uint8_t fullRes : 1;    	// Çözünürlük modu: 1=Tam çözünürlük (aralık arttıkça bit artar, 4mg/LSB), 0=Sabit 10-bit.
-	uint8_t reserved : 1;   	// Ayrılmış bit, veri sayfasına göre her zaman 0 olmalıdır[cite: 1240].
-	uint8_t interrupt : 1;  	// Kesme (INT) pinlerinin lojiği: 0=Active High (Yüksekte aktif), 1=Active Low (Düşükte aktif).
-	uint8_t spi : 1;        	// SPI modu seçimi: 1=3 telli SPI modu, 0=4 telli SPI modu[.
-	uint8_t selfTest : 1;   	// Self-Test özelliği: 1=Aktif (sensöre test kuvveti uygular), 0=Kapalı.
+	uint8_t range : 2;      	// D0:D1 - Ölçüm aralığını (G Range) seçer: 0x00=±2g, 0x01=±4g, 0x02=±8g, 0x03=±16g]. (@RANGE_BITS)
+	uint8_t justify : 1;   	 	// D2 - Veri hizalama: 1=Sola dayalı (Left-justified), 0=Sağa dayalı.
+	uint8_t fullRes : 1;    	// D3 - Çözünürlük modu: 1=Tam çözünürlük (aralık arttıkça bit artar, 4mg/LSB), 0=Sabit 10-bit.
+	uint8_t reserved : 1;   	// D4 - Ayrılmış bit, veri sayfasına göre her zaman 0 olmalıdır[cite: 1240].
+	uint8_t interrupt : 1;  	// D5 - Kesme (INT) pinlerinin lojiği: 0=Active High (Yüksekte aktif), 1=Active Low (Düşükte aktif).
+	uint8_t spi : 1;        	// D6 - SPI modu seçimi: 1=3 telli SPI modu, 0=4 telli SPI modu[.
+	uint8_t selfTest : 1;   	// D7 - Self-Test özelliği: 1=Aktif (sensöre test kuvveti uygular), 0=Kapalı.
 
 	uint8_t All;
 
 }ADXL345_DataFormatRegister_t;
 
+
+
 typedef struct
 {
-	uint8_t rate : 4;
-	uint8_t lowPower : 1;
-	uint8_t reserved : 3;
+	uint8_t rate : 4;       	// D0:D3 - Çıkış veri hızı (ODR) ve bant genişliği seçimi. Varsayılan 0x0A=100Hz. (@BW_RATE)
+	uint8_t lowPower : 1;   	// D4 - Güç modu seçimi: 0=Normal çalışma, 1=Düşük güç modu .
+	uint8_t reserved : 3;  		// D5:D7 - Rezerve
 
 	uint8_t All;
+
 }ADXL345_BRateRegister_t;
 
 uint8_t ADXL345_ScanDeviceAddr(void);
