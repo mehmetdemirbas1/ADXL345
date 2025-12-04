@@ -52,6 +52,11 @@
 #define WAKEUP_2HZ				0x02
 #define WAKEUP_1HZ				0x03
 
+#define RANGE_2G				0x00
+#define RANGE_4G				0x01
+#define RANGE_8G				0x02
+#define RANGE_16G				0x03
+
 typedef enum
 {
 	MODE_OFF = 0x00,
@@ -85,7 +90,7 @@ typedef enum
 typedef struct
 {
 	uint8_t wakeUp : 2;			// D0:D1 - Wakeup Bits: Uyku modunda okuma frekansını ayarlar. 00: 8Hz, 01: 4Hz, 10: 2Hz, 11: 1Hz
-	uint8_t sleep : 1;			// D2 - Sleep Bit: Cihazı uyku moduna alır.0: Normal Mod, 1: Uyku Modu (Düşük güç tüketimi)
+	uint8_t sleep : 1;			// D2 - Sleep Bit: Cihazı uyku moduna alır. 0: Normal Mod, 1: Uyku Modu (Düşük güç tüketimi)
 	uint8_t mesaureBit : 1;		// D3 - Measure Bit: Ölçümü başlatır veya durdurur. 1: Ölçüm Modu 0: Bekleme Modu
 	uint8_t autoSleep : 1;		// D4 - Auto_Sleep Bit: Otomatik uyku özelliğini açar. 1:Hareketsizlik algılanırsa otomatik uykuya geçer 0:Devre dışı.
 	uint8_t linkBit : 1;		// D5 - Link Bit: 1: Activity 0: Fonksiyonlar concurrent çalışır.
@@ -94,6 +99,18 @@ typedef struct
 	uint8_t All;
 
 }ADXL345_PowerControlRegister_t;
+
+typedef struct
+{
+	uint8_t range : 2;      	// Ölçüm aralığını (G Range) seçer: 0x00=±2g, 0x01=±4g, 0x02=±8g, 0x03=±16g].
+	uint8_t justify : 1;   	 	// Veri hizalama: 1=Sola dayalı (Left-justified), 0=Sağa dayalı.
+	uint8_t fullRes : 1;    	// Çözünürlük modu: 1=Tam çözünürlük (aralık arttıkça bit artar, 4mg/LSB), 0=Sabit 10-bit.
+	uint8_t reserved : 1;   	// Ayrılmış bit, veri sayfasına göre her zaman 0 olmalıdır[cite: 1240].
+	uint8_t interrupt : 1;  	// Kesme (INT) pinlerinin lojiği: 0=Active High (Yüksekte aktif), 1=Active Low (Düşükte aktif).
+	uint8_t spi : 1;        	// SPI modu seçimi: 1=3 telli SPI modu, 0=4 telli SPI modu[.
+	uint8_t selfTest : 1;   	// Self-Test özelliği: 1=Aktif (sensöre test kuvveti uygular), 0=Kapalı.
+
+}ADXL345_DataFormatRegister_t;
 
 uint8_t ADXL345_ScanDeviceAddr(void);
 ADXL345_InitStatus_t ADXL345_Init(void);
