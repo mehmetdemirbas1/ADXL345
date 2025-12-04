@@ -57,12 +57,16 @@
 #define RANGE_8G				0x02
 #define RANGE_16G				0x03
 
-#define HZ_400					0x00
-#define HZ_200					0x00
-#define HZ_100					0x00
-#define HZ_50					0x00
-#define HZ_250					0x00
-#define HZ_12H5					0x00
+
+#define HZ_3000					0x0F
+#define HZ_1600					0x0E
+#define HZ_800					0x0D
+#define HZ_400					0x0C
+#define HZ_200					0x0B
+#define HZ_100					0x0A
+#define HZ_50					0x09
+#define HZ_25					0x08
+#define HZ_12H5					0x07
 
 typedef enum
 {
@@ -128,7 +132,7 @@ typedef struct
 	uint8_t reserved : 3;
 
 	uint8_t All;
-}ADXL345_BwRateRegister_t;
+}ADXL345_BRateRegister_t;
 
 uint8_t ADXL345_ScanDeviceAddr(void);
 ADXL345_InitStatus_t ADXL345_Init(void);

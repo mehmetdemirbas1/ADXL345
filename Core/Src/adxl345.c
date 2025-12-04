@@ -71,6 +71,9 @@ ADXL345_InitStatus_t ADXL345_Init(void)
 
 	ADXL345_WriteRegister(DATA_FORMAT, temp);
 
+	ADXL345_BRateRegister_t baudrateConfig = {0};
+
+
 	return INIT_OK;
 }
 
