@@ -95,7 +95,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  status = ADXL345_Init();
+  status = ADXL345_Init(&hi2c1);
 
   /* USER CODE END 2 */
 
@@ -106,12 +106,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  x = ADXL345_getAxisValue(DATAX0);
-	  y = ADXL345_getAxisValue(DATAY0);
-	  z = ADXL345_getAxisValue(DATAZ0);
-	  gx = ADXL345_getGValue(DATAX0, SCALE_FACTOR_4G);
-	  gy = ADXL345_getGValue(DATAY0, SCALE_FACTOR_4G);
-	  gz = ADXL345_getGValue(DATAZ0, SCALE_FACTOR_4G);
+	  x = ADXL345_getAxisValue(&hi2c1, DATAX0);
+	  y = ADXL345_getAxisValue(&hi2c1, DATAY0);
+	  z = ADXL345_getAxisValue(&hi2c1, DATAZ0);
+	  gx = ADXL345_getGValue(&hi2c1, DATAX0, SCALE_FACTOR_4G);
+	  gy = ADXL345_getGValue(&hi2c1, DATAY0, SCALE_FACTOR_4G);
+	  gz = ADXL345_getGValue(&hi2c1, DATAZ0, SCALE_FACTOR_4G);
 	  HAL_Delay(200);
   }
   /* USER CODE END 3 */

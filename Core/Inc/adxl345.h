@@ -141,12 +141,12 @@ typedef struct
 
 }ADXL345_BRateRegister_t;
 
-uint8_t ADXL345_ScanDeviceAddr(void);
-ADXL345_InitStatus_t ADXL345_Init(void);
-ADXL345_ReadStatus_t ADXL345_ReadRegister(uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata);
-ADXL345_WriteStatus_t ADXL345_WriteRegister(uint16_t registerAddr, uint16_t Value);
-int16_t ADXL345_getAxisValue(uint8_t axisValue);
-double ADXL345_getGValue(uint8_t axisValue, double scaleFactor);
+uint8_t ADXL345_ScanDeviceAddr(I2C_HandleTypeDef *i2cHandle);
+ADXL345_InitStatus_t ADXL345_Init(I2C_HandleTypeDef *i2cHandle);
+ADXL345_ReadStatus_t ADXL345_ReadRegister(I2C_HandleTypeDef *i2cHandle, uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata);
+ADXL345_WriteStatus_t ADXL345_WriteRegister(I2C_HandleTypeDef *i2cHandle, uint16_t registerAddr, uint16_t Value);
+int16_t ADXL345_getAxisValue(I2C_HandleTypeDef *i2cHandle, uint8_t axisValue);
+double ADXL345_getGValue(I2C_HandleTypeDef *i2cHandle, uint8_t axisValue, double scaleFactor);
 
 #endif /* INC_ADXL345_H_ */
 
