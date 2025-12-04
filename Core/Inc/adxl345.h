@@ -57,6 +57,13 @@
 #define RANGE_8G				0x02
 #define RANGE_16G				0x03
 
+#define HZ_400					0x00
+#define HZ_200					0x00
+#define HZ_100					0x00
+#define HZ_50					0x00
+#define HZ_250					0x00
+#define HZ_12H5					0x00
+
 typedef enum
 {
 	MODE_OFF = 0x00,
@@ -110,7 +117,18 @@ typedef struct
 	uint8_t spi : 1;        	// SPI modu seçimi: 1=3 telli SPI modu, 0=4 telli SPI modu[.
 	uint8_t selfTest : 1;   	// Self-Test özelliği: 1=Aktif (sensöre test kuvveti uygular), 0=Kapalı.
 
+	uint8_t All;
+
 }ADXL345_DataFormatRegister_t;
+
+typedef struct
+{
+	uint8_t rate : 4;
+	uint8_t lowPower : 1;
+	uint8_t reserved : 3;
+
+	uint8_t All;
+}ADXL345_BwRateRegister_t;
 
 uint8_t ADXL345_ScanDeviceAddr(void);
 ADXL345_InitStatus_t ADXL345_Init(void);
