@@ -59,6 +59,8 @@ static void MX_I2C1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 ADXL345_InitStatus_t status;
+int16_t x, y, z;
+double gx,gy,gz;
 
 /* USER CODE END 0 */
 
@@ -104,8 +106,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_GPIO_TogglePin(GPIOB, led1_Pin|led2_Pin|led3_Pin);
-	  HAL_Delay(500);
+	  x = ADXL345_getAxisValue(DATAX0);
+	  y = ADXL345_getAxisValue(DATAY0);
+	  z = ADXL345_getAxisValue(DATAZ0);
+	  gx = ADXL345_getGValue(DATAX0, SCALE_FACTOR_4G);
+	  gy = ADXL345_getGValue(DATAY0, SCALE_FACTOR_4G);
+	  gz = ADXL345_getGValue(DATAZ0, SCALE_FACTOR_4G);
+	  HAL_Delay(200);
   }
   /* USER CODE END 3 */
 }

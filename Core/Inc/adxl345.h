@@ -45,6 +45,11 @@
 
 #define ADXL345_DEVICE_ADDR		0xA6
 
+#define SCALE_FACTOR_2G			(double)1.0/256.0
+#define SCALE_FACTOR_4G			(double)1.0/128.0
+#define SCALE_FACTOR_8G			(double)1.0/64.0
+#define SCALE_FACTOR_16G		(double)1.0/32.0
+
 /* @WAKEUP_BITS  */
 #define WAKEUP_8HZ				0x00
 #define WAKEUP_4HZ				0x01
@@ -140,7 +145,8 @@ uint8_t ADXL345_ScanDeviceAddr(void);
 ADXL345_InitStatus_t ADXL345_Init(void);
 ADXL345_ReadStatus_t ADXL345_ReadRegister(uint16_t registerAddr, uint16_t sizeOfData, uint8_t *pdata);
 ADXL345_WriteStatus_t ADXL345_WriteRegister(uint16_t registerAddr, uint16_t Value);
-
+int16_t ADXL345_getAxisValue(uint8_t axisValue);
+double ADXL345_getGValue(uint8_t axisValue, double scaleFactor);
 
 #endif /* INC_ADXL345_H_ */
 

@@ -60,7 +60,7 @@ ADXL345_InitStatus_t ADXL345_Init(void)
 	ADXL345_WriteRegister(POWER_CTL, temp);
 
 	ADXL345_DataFormatRegister_t dataformat = {0};
-	dataformat.range = RANGE_8G;
+	dataformat.range = RANGE_4G;
 	dataformat.justify = 0x00;
 	dataformat.fullRes = 0x00;
 	dataformat.interrupt = 0x00;
@@ -81,6 +81,26 @@ ADXL345_InitStatus_t ADXL345_Init(void)
 	ADXL345_WriteRegister(BW_RATE, temp);
 
 	return INIT_OK;
+}
+
+int16_t ADXL345_getAxisValue(uint8_t axisValue)
+{
+	uint8_t data[2] = {0};
+	int16_t outputData = 0;
+
+	ADXL345_ReadRegister(axisValue, 2, data);
+
+	outputData = ((data[1] << 8 ) | data[0] );
+
+	return outputData;
+}
+
+double ADXL345_getGValue(uint8_t axisValue, double scaleFactor)
+{
+	double outputData = 0;
+	outputData =(double) ADXL345_getAxisValue(axisValue);
+
+	return (double)(outputData * scaleFactor);
 }
 
 
