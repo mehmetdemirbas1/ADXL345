@@ -59,6 +59,18 @@ ADXL345_InitStatus_t ADXL345_Init(void)
 
 	ADXL345_WriteRegister(POWER_CTL, temp);
 
+	ADXL345_DataFormatRegister_t dataformat = {0};
+	dataformat.range = RANGE_8G;
+	dataformat.justify = 0x00;
+	dataformat.fullRes = 0x00;
+	dataformat.interrupt = 0x00;
+	dataformat.spi = 0x00;
+	dataformat.selfTest = 0x00;
+
+	temp = *((uint8_t*)&dataformat);
+
+	ADXL345_WriteRegister(DATA_FORMAT, temp);
+
 	return INIT_OK;
 }
 
